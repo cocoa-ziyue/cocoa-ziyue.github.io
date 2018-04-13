@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2018-04-13T00:39:35.477Z</updated>
+  <updated>2018-04-13T08:26:48.645Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -17,11 +17,32 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>iOS内存泄露监测和修复</title>
+    <link href="http://yoursite.com/2018/04/13/iOS%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E7%9B%91%E6%B5%8B%E5%92%8C%E4%BF%AE%E5%A4%8D/"/>
+    <id>http://yoursite.com/2018/04/13/iOS内存泄露监测和修复/</id>
+    <published>2018-04-13T08:05:00.000Z</published>
+    <updated>2018-04-13T08:26:48.645Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="iOS内存泄露监测和修复"><a href="#iOS内存泄露监测和修复" class="headerlink" title="iOS内存泄露监测和修复"></a><center>iOS内存泄露监测和修复<center></center></center></h4><hr><h6 id="内存泄露的相关概念"><a href="#内存泄露的相关概念" class="headerlink" title="内存泄露的相关概念:"></a>内存泄露的相关概念:</h6><pre><code>如果程序运行时一直分配内存而不及时释放无用的内存，程序占用的内存越来越大，直到把系统分配给该APP的内存消耗殚尽，程序因无内存可用导致崩溃，这样的情况我们称之为内存泄漏。</code></pre><hr><h6 id="内存泄露可能引发的问题"><a href="#内存泄露可能引发的问题" class="headerlink" title="内存泄露可能引发的问题:"></a>内存泄露可能引发的问题:</h6><pre><code>1)内存消耗殆尽的时候，程序会因没有内存被杀死，即crash。2)当内存快要用完的时候，会非常的卡顿。3)如果是ViewController没有释放掉，引起的内存泄露，还会引起其他很多问题，尤其是和通知相关的。没有被释放掉的ViewController还能接收通知，还会执行相关的动作，所以会引起各种各样的异常情况的发生。（这一点尤为重要，项目中重点关注）</code></pre><hr><h6 id="常见的检测监测方法"><a href="#常见的检测监测方法" class="headerlink" title="常见的检测监测方法:"></a>常见的检测监测方法:</h6><pre><code>1.Analyze静态分析:通过静态分析我们可以最初步的了解到代码的一些不规范的地方和一些代码逻辑上的错误；2.Leaks，Xcode自带工具。3.MLeaksFinder，来自微信阅读团队的监测工具，比较精准。有友好的弹框提示，可以定位到相关的类和发生内存泄露的步骤。</code></pre><hr><h6 id="常见循环引用："><a href="#常见循环引用：" class="headerlink" title="常见循环引用："></a>常见循环引用：</h6><pre><code> 1.NSTimer:创建定时器时,当前控制器引用而定时器了(为什么因引用定时器?后续要用到这个定时器对象),在给定时器添加任务时,定时器保留了self(当前控制器).这里就出现了循环引用.解决方法：控制器不再引用定时器(不太可能) ,定时器不再保留当前控制器(较为科学，直接停止掉即可)2.GCD计时器，使用GCD的定时器，要注意使用weakself。3.VC的内存泄露。解决方法：想要知道ViewController有没有被释放，一个方法就是可以通过看ViewController有没有执行dealloc方法。4.block内存泄露。解决方法：打断引用循环关系。5.delegate内存泄露。weak弱引用即可。6.NSNotification内存泄露：weak弱引用即可。</code></pre><hr><p>具体内存问题和解决方案可以查看github上面的讲解。<br><a href="https://github.com/cocoa-ziyue/LeaksResolve" target="_blank" rel="noopener">点击查看github</a><br>附上Demo地址，欢迎提出宝贵意见。<br><a href="https://github.com/cocoa-ziyue/LeaksResolve" target="_blank" rel="noopener">点击查看Demo</a></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h4 id=&quot;iOS内存泄露监测和修复&quot;&gt;&lt;a href=&quot;#iOS内存泄露监测和修复&quot; class=&quot;headerlink&quot; title=&quot;iOS内存泄露监测和修复&quot;&gt;&lt;/a&gt;&lt;center&gt;iOS内存泄露监测和修复&lt;center&gt;&lt;/center&gt;&lt;/center&gt;&lt;/h4
+      
+    
+    </summary>
+    
+    
+  </entry>
+  
+  <entry>
     <title>Hello World</title>
     <link href="http://yoursite.com/2018/04/13/hello-world/"/>
     <id>http://yoursite.com/2018/04/13/hello-world/</id>
-    <published>2018-04-13T00:39:35.477Z</published>
-    <updated>2018-04-13T00:39:35.477Z</updated>
+    <published>2018-04-13T00:39:00.000Z</published>
+    <updated>2018-04-13T08:03:09.285Z</updated>
     
     <content type="html"><![CDATA[<p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p><h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p><h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p><h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p><h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>]]></content>
     

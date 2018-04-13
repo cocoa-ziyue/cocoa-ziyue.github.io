@@ -6,19 +6,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Archives: 2018 | cocoa-ziyue的技术博客</title>
+  <title>iOS内存泄露监测和修复 | cocoa-ziyue的技术博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="移动技术栈：iOS、Shell脚本；服务端技术栈：NodeJs、PHP；前端技术栈：JS、CSS、VUE">
+  <meta name="description" content="iOS内存泄露监测和修复 内存泄露的相关概念:如果程序运行时一直分配内存而不及时释放无用的内存，程序占用的内存越来越大，直到把系统分配给该APP的内存消耗殚尽，程序因无内存可用导致崩溃，这样的情况我们称之为内存泄漏。  内存泄露可能引发的问题:1)内存消耗殆尽的时候，程序会因没有内存被杀死，即crash。 2)当内存快要用完的时候，会非常的卡顿。 3)如果是ViewController没有释放掉，">
 <meta name="keywords" content="iOS">
-<meta property="og:type" content="website">
-<meta property="og:title" content="cocoa-ziyue的技术博客">
-<meta property="og:url" content="http://yoursite.com/archives/2018/index.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iOS内存泄露监测和修复">
+<meta property="og:url" content="http://yoursite.com/2018/04/13/iOS内存泄露监测和修复/index.html">
 <meta property="og:site_name" content="cocoa-ziyue的技术博客">
-<meta property="og:description" content="移动技术栈：iOS、Shell脚本；服务端技术栈：NodeJs、PHP；前端技术栈：JS、CSS、VUE">
+<meta property="og:description" content="iOS内存泄露监测和修复 内存泄露的相关概念:如果程序运行时一直分配内存而不及时释放无用的内存，程序占用的内存越来越大，直到把系统分配给该APP的内存消耗殚尽，程序因无内存可用导致崩溃，这样的情况我们称之为内存泄漏。  内存泄露可能引发的问题:1)内存消耗殆尽的时候，程序会因没有内存被杀死，即crash。 2)当内存快要用完的时候，会非常的卡顿。 3)如果是ViewController没有释放掉，">
 <meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-04-13T08:26:48.645Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="cocoa-ziyue的技术博客">
-<meta name="twitter:description" content="移动技术栈：iOS、Shell脚本；服务端技术栈：NodeJs、PHP；前端技术栈：JS、CSS、VUE">
+<meta name="twitter:title" content="iOS内存泄露监测和修复">
+<meta name="twitter:description" content="iOS内存泄露监测和修复 内存泄露的相关概念:如果程序运行时一直分配内存而不及时释放无用的内存，程序占用的内存越来越大，直到把系统分配给该APP的内存消耗殚尽，程序因无内存可用导致崩溃，这样的情况我们称之为内存泄漏。  内存泄露可能引发的问题:1)内存消耗殆尽的时候，程序会因没有内存被杀死，即crash。 2)当内存快要用完的时候，会非常的卡顿。 3)如果是ViewController没有释放掉，">
   
     <link rel="alternative" href="/atom.xml" title="cocoa-ziyue的技术博客" type="application/atom+xml">
   
@@ -158,76 +159,174 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
+            <article id="post-iOS内存泄露监测和修复" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
   
+    <h1 class="article-title" itemprop="name">
+      iOS内存泄露监测和修复
+    </h1>
   
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2018" class="archive-year">2018</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/04/13/iOS内存泄露监测和修复/" class="archive-article-date">
+
+        
+        <a href="/2018/04/13/iOS内存泄露监测和修复/" class="archive-article-date">
   	<time datetime="2018-04-13T08:05:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-04-13</time>
 </a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/04/13/iOS内存泄露监测和修复/">iOS内存泄露监测和修复</a>
-    </h1>
-  
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h4 id="iOS内存泄露监测和修复"><a href="#iOS内存泄露监测和修复" class="headerlink" title="iOS内存泄露监测和修复"></a><center>iOS内存泄露监测和修复<center></center></center></h4><hr>
+<h6 id="内存泄露的相关概念"><a href="#内存泄露的相关概念" class="headerlink" title="内存泄露的相关概念:"></a>内存泄露的相关概念:</h6><pre><code>如果程序运行时一直分配内存而不及时释放无用的内存，程序占用的内存越来越大，直到把系统分配给该APP的内存消耗殚尽，程序因无内存可用导致崩溃，这样的情况我们称之为内存泄漏。
+</code></pre><hr>
+<h6 id="内存泄露可能引发的问题"><a href="#内存泄露可能引发的问题" class="headerlink" title="内存泄露可能引发的问题:"></a>内存泄露可能引发的问题:</h6><pre><code>1)内存消耗殆尽的时候，程序会因没有内存被杀死，即crash。
+2)当内存快要用完的时候，会非常的卡顿。
+3)如果是ViewController没有释放掉，引起的内存泄露，还会引起其他很多问题，尤其是和通知相关的。没有被释放掉的ViewController还能接收通知，还会执行相关的动作，所以会引起各种各样的异常情况的发生。（这一点尤为重要，项目中重点关注）
+</code></pre><hr>
+<h6 id="常见的检测监测方法"><a href="#常见的检测监测方法" class="headerlink" title="常见的检测监测方法:"></a>常见的检测监测方法:</h6><pre><code>1.Analyze静态分析:通过静态分析我们可以最初步的了解到代码的一些不规范的地方和一些代码逻辑上的错误；
+2.Leaks，Xcode自带工具。
+3.MLeaksFinder，来自微信阅读团队的监测工具，比较精准。有友好的弹框提示，可以定位到相关的类和发生内存泄露的步骤。
+</code></pre><hr>
+<h6 id="常见循环引用："><a href="#常见循环引用：" class="headerlink" title="常见循环引用："></a>常见循环引用：</h6><pre><code> 1.NSTimer:创建定时器时,当前控制器引用而定时器了(为什么因引用定时器?后续要用到这个定时器对象),在给定时器添加任务时,定时器保留了self(当前控制器).这里就出现了循环引用.解决方法：控制器不再引用定时器(不太可能) ,定时器不再保留当前控制器(较为科学，直接停止掉即可)
+2.GCD计时器，使用GCD的定时器，要注意使用weakself。
+3.VC的内存泄露。解决方法：想要知道ViewController有没有被释放，一个方法就是可以通过看ViewController有没有执行dealloc方法。
+4.block内存泄露。解决方法：打断引用循环关系。
+5.delegate内存泄露。weak弱引用即可。
+6.NSNotification内存泄露：weak弱引用即可。
+</code></pre><hr>
+<p>具体内存问题和解决方案可以查看github上面的讲解。<br><a href="https://github.com/cocoa-ziyue/LeaksResolve" target="_blank" rel="noopener">点击查看github</a><br>附上Demo地址，欢迎提出宝贵意见。<br><a href="https://github.com/cocoa-ziyue/LeaksResolve" target="_blank" rel="noopener">点击查看Demo</a></p>
 
-        <div class="article-info info-on-right">
-          
-          
+      
 
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
+        </div>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2018/04/13/iOS内存泄露监测和修复/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/04/13/hello-world/" class="archive-article-date">
-  	<time datetime="2018-04-13T00:39:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-04-13</time>
-</a>
+<nav id="article-nav">
+  
+  
+    <a href="/2018/04/13/hello-world/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Hello World</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
+        
+        
+    </div>
+</aside>
+
+
+
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/04/13/hello-world/">Hello World</a>
-    </h1>
+  
   
 
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
   
 
-    
+  
+
+  
 
 
           </div>
@@ -250,8 +349,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,
